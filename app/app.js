@@ -1,11 +1,11 @@
-const socket = new WebSocket("ws://localhost:3000");
+const socket = io("ws://localhost:3000");
 
 function sendMessage(e) {
   e.preventDefault();
   const messageInput = document.getElementById("message-input");
 
   if (messageInput.value) {
-    socket.send(messageInput.value);
+    socket.emit('message', messageInput.value);
     messageInput.value = "";
   }
 
@@ -15,7 +15,7 @@ function sendMessage(e) {
 document.querySelector("form").addEventListener("submit", sendMessage);
 
 // Listen for messages
-socket.addEventListener("message", ({ data }) =>  {
+socket.on("message", (data) =>  {
     const message = document.createElement("li");
     message.textContent = data;
     document.getElementById("messages").appendChild(message);
